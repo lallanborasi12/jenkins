@@ -5,28 +5,29 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo "Code downloaded successfully"
+                checkout scm
             }
         }
 
-        stage('Workspace') {
+        stage('Install Dependencies') {
             steps {
-                sh 'pwd'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build React App') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Verify Build') {
+            steps {
                 sh 'ls -la'
+                sh 'ls -la build'
             }
         }
 
-        stage('Git Information') {
-            steps {
-                sh 'git branch'
-                sh 'git log --oneline -5'
-            }
-        }
-
-        stage('Finish') {
-            steps {
-                echo "Pipeline completed successfully"
-            }
-        }
     }
 }
+
